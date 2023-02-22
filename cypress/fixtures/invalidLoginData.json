@@ -1,0 +1,5 @@
+{
+  "username": "Admin",
+  "password": "admin12345",
+  "expectedText": "Invalid credentials"
+}
