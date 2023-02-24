@@ -1,0 +1,25 @@
+{
+    "state": "Complete",
+    "statusCode": 200,
+    "invalidStatusCode": 422,
+    "statusMessage": "OK",
+    "invalidStatusMessage": "Unprocessable Entity",
+    "user": {
+        "username": "jfgytrdgukgysergmxqwedb",
+        "email": "esrterrythcfgdsergrbqweg",
+        "password": "zfdgdrgbsetsergrqwebdn",
+        "bio": "biographytest123456456"
+    },
+    "response_headers": {
+        "content_type": "application/json"
+    },
+    "errors": {
+        "email": [
+            "has already been taken"
+        ],
+        "username": [
+            "has already been taken"
+        ]
+    }
+
+}
