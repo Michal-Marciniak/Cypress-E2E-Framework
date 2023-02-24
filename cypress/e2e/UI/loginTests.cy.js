@@ -1,16 +1,15 @@
-import LoginPage from "../Pages/LoginPage";
-import HomePage from "../Pages/HomePage";
-import ForgotPasswordPage from "../Pages/ForgotPasswordPage";
-import Properties from "../fixtures/properties"
+import LoginPage from "../../Pages/LoginPage";
+import HomePage from "../../Pages/HomePage";
+import ForgotPasswordPage from "../../Pages/ForgotPasswordPage";
 
 describe('Login Page tests', () => {
 
     beforeEach(() => {
-        cy.visit(Properties.baseUrl)
+        cy.visit('/login')
     })
 
     afterEach(() => {
-        cy.visit(Properties.baseUrl)
+        cy.visit('/login')
     })
 
     it('login with valid credentials', () => {
