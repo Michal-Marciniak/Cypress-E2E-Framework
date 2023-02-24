@@ -1,31 +1,39 @@
 class LoginPage {
 
-    usernameInput = "input[name='username']"
-    passwordInput = "input[name='password']"
-    loginButton   = "button[type='submit']"
-    alertText     = ".oxd-alert-content-text"
+    get usernameInput() {
+        return cy.get("input[name='username']")
+    }
+
+    get passwordInput() {
+        return cy.get("input[name='password']")
+    }
+
+    get loginButton() {
+        return cy.get("button[type='submit']")
+    }
+
+    get alertText() {
+        return cy.get(".oxd-alert-content-text")
+    }
+
+    get title() {
+        return cy.wrap(cy.title())
+    }
+
+    get url() {
+        return cy.wrap(cy.url())
+    }
 
     login(username, password) {
-        cy.get(this.usernameInput).type(username)
-        cy.get(this.passwordInput).type(password)
-        cy.get(this.loginButton).click()
+        this.usernameInput.type(username)
+        this.passwordInput.type(password)
+        this.loginButton.click()
     }
 
     clickForgotPasswordLink() {
         cy.clickLink('Forgot your password?')
     }
 
-    getTitle() {
-        return cy.wrap(cy.title())
-    }
-
-    getUrl() {
-        return cy.wrap(cy.url())
-    }
-
-    getAlertText() {
-        return cy.get(this.alertText)
-    }
 }
 
 export default new LoginPage()

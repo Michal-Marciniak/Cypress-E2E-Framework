@@ -1,10 +1,9 @@
 class HomePage {
-
-    dashboardTitle = ".oxd-text.oxd-text--h6.oxd-topbar-header-breadcrumb-module"
-
-    getDashboardTitle() {
-        return cy.get(this.dashboardTitle)
+  
+    get dashboardTitle() {
+        return cy.get(".oxd-text.oxd-text--h6.oxd-topbar-header-breadcrumb-module")
     }
+    
 }
 
 export default new HomePage()

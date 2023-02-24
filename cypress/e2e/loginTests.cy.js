@@ -19,7 +19,7 @@ describe('Login Page tests', () => {
             
             LoginPage.login(data.username, data.password)
 
-            HomePage.getDashboardTitle()
+            HomePage.dashboardTitle
                 .should('have.text', data.expectedText)
         })
     });
@@ -29,7 +29,7 @@ describe('Login Page tests', () => {
         cy.fixture('invalidLoginData').then((data) => {
             
             LoginPage.login(data.username, data.password)
-            LoginPage.getAlertText()
+            LoginPage.alertText
                 .should('have.text', data.expectedText)
         })
     });
