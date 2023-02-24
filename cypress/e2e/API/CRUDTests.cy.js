@@ -83,7 +83,7 @@ describe('CRUD Tests', () => {
             cy.get('[placeholder="Password"]').type(data.user.password)
             cy.get('[type="submit"]').click()
             cy.get('[routerlink="/settings"]').click()
-            cy.get('[formcontrolname="bio"]').type(data.user.bio)
+            cy.get('[formcontrolname="bio"]').clear().type(data.user.bio)
             cy.get('[type="submit"]').click()
 
             cy.wait('@update').then((req) => {
