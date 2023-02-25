@@ -5,10 +5,10 @@
     "statusMessage": "OK",
     "invalidStatusMessage": "Unprocessable Entity",
     "user": {
-        "username": "jfgytrdgukgysergmxqwedb",
-        "email": "esrterrythcfgdsergrbqweg",
-        "password": "zfdgdrgbsetsergrqwebdn",
-        "bio": "biographytest123456456"
+        "username": "jankowalskitest123",
+        "email": "jankowalskitest123@test.com",
+        "password": "jankowalskitest123",
+        "bio": "jankowalskitest123 bio"
     },
     "response_headers": {
         "content_type": "application/json"

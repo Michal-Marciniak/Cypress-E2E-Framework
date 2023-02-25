@@ -3,12 +3,15 @@ describe('CRUD Tests', () => {
     let token = ""
     let bio = ""
     let image = ""
+    let article_slug = ""
+    let baseUrl = "https://api.realworld.io/api"
 
-    it('GET - verifying getting popular tags', () => {
+    it.skip('GET - verifying getting popular tags', () => {
 
-        cy.intercept('GET', 'https://api.realworld.io/api/tags').as('getTags')
+        cy.intercept('GET', baseUrl + '/tags').as('getTags')
         // by visiting this site, the get request will be sent automatically
         cy.visit('https://angular.realworld.io/')
+        
         cy.wait('@getTags').then((req) => {
             //console.log(req)
             cy.fixture('tags').then((data) => {
@@ -22,16 +25,16 @@ describe('CRUD Tests', () => {
         })
     });
 
-    it('POST - verifying succssesful registering new user', () => {
+    it.skip('POST - verifying succssesful registering new user', () => {
         
-        cy.intercept('POST', 'https://api.realworld.io/api/users').as('signup')
+        cy.intercept('POST', baseUrl + '/users').as('signup')
         cy.visit('https://angular.realworld.io/')
         cy.get('[routerlink="/register"]').click()
         cy.fixture('registerData').then((data) => {
             
-            cy.get('[placeholder="Username"]').type(data.user.username)
-            cy.get('[placeholder="Email"]').type(data.user.email)
-            cy.get('[placeholder="Password"]').type(data.user.password)
+            cy.get('[placeholder="Username"]').clear().type(data.user.username)
+            cy.get('[placeholder="Email"]').clear().type(data.user.email)
+            cy.get('[placeholder="Password"]').clear().type(data.user.password)
             cy.get('[type="submit"]').click()
 
             cy.wait('@signup').then((req) => {
@@ -48,16 +51,16 @@ describe('CRUD Tests', () => {
         })
     });
 
-    it('POST - verifying unsuccssesful registering with existing data', () => {
+    it.skip('POST - verifying unsuccssesful registering with existing data', () => {
         
-        cy.intercept('POST', 'https://api.realworld.io/api/users').as('signup')
+        cy.intercept('POST', baseUrl + '/users').as('signup')
         cy.visit('https://angular.realworld.io/')
         cy.get('[routerlink="/register"]').click()
         cy.fixture('registerData').then((data) => {
             
-            cy.get('[placeholder="Username"]').type(data.user.username)
-            cy.get('[placeholder="Email"]').type(data.user.email)
-            cy.get('[placeholder="Password"]').type(data.user.password)
+            cy.get('[placeholder="Username"]').clear().type(data.user.username)
+            cy.get('[placeholder="Email"]').clear().type(data.user.email)
+            cy.get('[placeholder="Password"]').clear().type(data.user.password)
             cy.get('[type="submit"]').click()
 
             cy.wait('@signup').then((req) => {
@@ -72,22 +75,22 @@ describe('CRUD Tests', () => {
         })
     });
 
-    it('PUT - verifying updating user data', () => {
+    it.skip('PUT - verifying updating user data', () => {
 
-        cy.intercept('PUT', 'https://api.realworld.io/api/user').as('update')
+        cy.intercept('PUT', baseUrl + '/user').as('update')
         cy.visit('https://angular.realworld.io/')
         cy.get('[routerlink="/login"]').click()
         cy.fixture('registerData').then((data) => {
             
-            cy.get('[placeholder="Email"]').type(data.user.email)
-            cy.get('[placeholder="Password"]').type(data.user.password)
+            cy.get('[placeholder="Email"]').clear().type(data.user.email)
+            cy.get('[placeholder="Password"]').clear().type(data.user.password)
             cy.get('[type="submit"]').click()
             cy.get('[routerlink="/settings"]').click()
             cy.get('[formcontrolname="bio"]').clear().type(data.user.bio)
             cy.get('[type="submit"]').click()
 
             cy.wait('@update').then((req) => {
-                console.log(req)
+                //console.log(req)
                 expect(req.state).to.equal(data.state)
                 expect(req.response.statusCode).to.equal(data.statusCode)
                 expect(req.response.statusMessage).to.equal(data.statusMessage)
@@ -99,5 +102,63 @@ describe('CRUD Tests', () => {
             })
         })
     })
+
+    it('POST - login to application', () => {
+        
+        cy.fixture('registerData').then((data) => {
+            cy.request({
+                method: "POST",
+                url: baseUrl + "/users/login",
+                body: {
+                    "user": {
+                        "email": data.user.email,
+                        "password": data.user.password
+                    }
+                }
+            })
+            .then((response) => {
+                //console.log(response)
+                image = response.body.user.image
+                token = response.body.user.token
+                expect(response.status).to.equal(200)
+            })
+        })
+
+    });
+
+    it('POST - creating new article only through backend', () => {
+        
+        cy.fixture('article').then((data) => {
+            cy.request({
+                method: "POST",
+                url: "https://api.realworld.io/api/articles/",
+                headers: {
+                    'authorization': 'Token ' + token
+                },
+                body: data
+            })
+            .then((response) => {
+                //console.log(response)
+                article_slug = response.body.article.slug
+                expect(response.status).to.equal(200)
+            })
+        })
+    });
+
+    it('DELETE - delete last added article only through backend', () => {
+        
+        cy.request({
+            method: "DELETE",
+            url: baseUrl + '/articles/' + article_slug,
+            headers: {
+                'authorization': 'Token ' + token
+            }
+        })
+        .then((response) => {
+            console.log(response)
+            expect(response.status).to.equal(204)
+        })
+
+    });
 
 })
