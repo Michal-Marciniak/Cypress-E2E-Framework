@@ -13,8 +13,6 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-Cypress.config('baseUrl', 'https://opensource-demo.orangehrmlive.com/web/index.php/auth')
-
 /// <refrence types="Cypress" />
 import './commands'
 import 'cypress-iframe'

@@ -4,12 +4,14 @@ import ForgotPasswordPage from "../../Pages/ForgotPasswordPage";
 
 describe('Login Page tests', () => {
 
+    let baseUrl = Cypress.env('baseUrl')
+
     beforeEach(() => {
-        cy.visit('/login')
+        cy.visit(baseUrl + '/login')
     })
 
     afterEach(() => {
-        cy.visit('/login')
+        cy.visit(baseUrl + '/login')
     })
 
     it('login with valid credentials', () => {

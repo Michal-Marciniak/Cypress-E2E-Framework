@@ -4,9 +4,9 @@ describe('CRUD Tests', () => {
     let bio = ""
     let image = ""
     let article_slug = ""
-    let baseUrl = "https://api.realworld.io/api"
+    let baseUrl = Cypress.env('baseUrl')
 
-    it.skip('GET - verifying getting popular tags', () => {
+    it('GET - verifying getting popular tags', () => {
 
         cy.intercept('GET', baseUrl + '/tags').as('getTags')
         // by visiting this site, the get request will be sent automatically
@@ -23,6 +23,29 @@ describe('CRUD Tests', () => {
                 expect(req.response.body.tags).to.deep.equal(data.tags)
             })
         })
+    });
+
+    it('POST - login to application', () => {
+        
+        cy.fixture('registerData').then((data) => {
+            cy.request({
+                method: "POST",
+                url: baseUrl + "/users/login",
+                body: {
+                    "user": {
+                        "email": data.user.email,
+                        "password": data.user.password
+                    }
+                }
+            })
+            .then((response) => {
+                //console.log(response)
+                image = response.body.user.image
+                token = response.body.user.token
+                expect(response.status).to.equal(200)
+            })
+        })
+
     });
 
     it.skip('POST - verifying succssesful registering new user', () => {
@@ -51,7 +74,7 @@ describe('CRUD Tests', () => {
         })
     });
 
-    it.skip('POST - verifying unsuccssesful registering with existing data', () => {
+    it('POST - verifying unsuccssesful registering with existing data', () => {
         
         cy.intercept('POST', baseUrl + '/users').as('signup')
         cy.visit('https://angular.realworld.io/')
@@ -75,7 +98,7 @@ describe('CRUD Tests', () => {
         })
     });
 
-    it.skip('PUT - verifying updating user data', () => {
+    it('PUT - verifying updating user data', () => {
 
         cy.intercept('PUT', baseUrl + '/user').as('update')
         cy.visit('https://angular.realworld.io/')
@@ -99,32 +122,10 @@ describe('CRUD Tests', () => {
                 expect(req.response.body.user.image).to.equal(image)
                 expect(req.response.body.user.username).to.equal(data.user.username)
                 token = req.response.body.user.token
+                bio = req.response.body.user.bio
             })
         })
     })
-
-    it('POST - login to application', () => {
-        
-        cy.fixture('registerData').then((data) => {
-            cy.request({
-                method: "POST",
-                url: baseUrl + "/users/login",
-                body: {
-                    "user": {
-                        "email": data.user.email,
-                        "password": data.user.password
-                    }
-                }
-            })
-            .then((response) => {
-                //console.log(response)
-                image = response.body.user.image
-                token = response.body.user.token
-                expect(response.status).to.equal(200)
-            })
-        })
-
-    });
 
     it('POST - creating new article only through backend', () => {
         
